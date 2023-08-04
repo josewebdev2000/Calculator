@@ -1,0 +1,262 @@
+/*Import Google Fonts*/
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@300&family=VT323&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Advent+Pro:ital,wght@1,200&display=swap');
+
+/* Global Styles */
+:root
+{
+    --navy-blue: #03256C;
+    --cobalt-blue: #2541B2;
+    --azure-blue: #1768AC;
+    --turquoise-blue: #06BEE1;
+    --white: #ffffff;
+    --digits-font-family: "VT323", monospace;
+    --letters-font-family: "Advent Pro", sans-serif;
+    --extra-small: 8px;
+    --small: 16px;
+    --medium: 24px;
+    --large: 48px;
+    --extra-large: 72px;
+}
+
+*
+{
+    margin: 0;
+    padding: 0;
+}
+
+body
+{
+    background-color: var(--azure-blue);
+    margin: 50px;
+}
+
+/* Header Styles */
+header
+{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+header > h1
+{
+    color: var(--navy-blue);
+    font-family: var(--letters-font-family);
+    font-size: var(--extra-large);
+}
+
+/* Main Styles */
+main
+{
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+.app-container
+{
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: space-evenly;
+    margin: 10px;
+    width: 98.3%;
+    height: 800px;
+}
+
+.calculator-container
+{
+    align-self: center;
+    margin-left: 23%;
+    width: 775px;
+    height: 775px;
+}
+
+.sfx-button-container
+{
+    border: 5px solid var(--navy-blue);
+    width: 200px;
+    height: 150px;
+    margin: 15px;
+}
+
+.calculator
+{
+    width: 750px;
+    height: 750px;
+    margin: auto;
+    margin-top: 5px;
+    border: 5px solid var(--navy-blue);
+}
+
+.calculator-screen
+{
+    margin: 20px;
+    height: 250px;
+    border: 5px solid var(--navy-blue);
+}
+
+.operation-preview
+{
+    margin: 10px;
+    height: 80px;
+    border: 5px solid var(--navy-blue);
+    margin-left: 50%;
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: flex-end;
+    align-items: flex-start;
+    font-family: var(--digits-font-family);
+    font-size: var(--large);
+}
+
+.result-preview
+{
+    margin: 10px;
+    height: 120px;
+    border: 5px solid var(--navy-blue);
+    margin-left: 15%;
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: flex-end;
+    align-items: flex-end;
+    font-family: var(--digits-font-family);
+    font-size: var(--extra-large);
+}
+
+.calculator-buttons
+{
+    height: 420px;
+    margin: 20px;
+    margin-top: 40px;
+    display: grid;
+    grid-template-areas: 
+    "clear clear clear clear delete delete delete delete"
+    "seven seven eight eight nine nine plus plus"
+    "four four five five six six minus minus"
+    "one one two two three three product product"
+    "point point cero cero equals equals divide divide";
+}
+
+.button
+{
+    height: 25px;
+    margin: 10px;
+    border: 3px solid var(--navy-blue);
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: center;
+    align-items: center;
+    font-family: var(--digits-font-family);
+    font-size: var(--large);
+}
+
+.button:hover
+{
+    cursor: pointer;
+}
+
+.clear
+{
+    grid-area: clear;
+    height: 50px;
+}
+
+.delete
+{
+    grid-area: delete;
+    height: 50px;
+}
+
+.plus
+{
+    grid-area: plus;
+}
+
+.seven
+{
+    grid-area: seven;
+}
+
+.eight
+{
+    grid-area: eight;
+}
+
+.nine
+{
+    grid-area: nine;
+}
+
+.minus
+{
+    grid-area: minus;
+}
+
+.four
+{
+    grid-area: four;
+}
+
+.five
+{
+    grid-area: five;
+}
+
+.six
+{
+    grid-area: six;
+}
+
+.product
+{
+    grid-area: product;
+}
+
+.one
+{
+    grid-area: one;
+}
+
+.two
+{
+    grid-area: two;
+}
+
+.three
+{
+    grid-area: three;
+}
+
+.divide
+{
+    grid-area: divide;
+}
+
+.point
+{
+    grid-area: point;
+}
+
+.cero
+{
+    grid-area: cero;
+}
+
+.equals
+{
+    grid-area: equals;
+}
+
+/* Footer Styles */
+footer
+{
+    border: 5px solid var(--navy-blue);
+    margin-left: 560px;
+    margin-right: 530px;
+}
+
+.footer-content
+{
+    width: 300px;
+    height: 100px;
+}
