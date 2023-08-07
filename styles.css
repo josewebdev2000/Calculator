@@ -31,6 +31,13 @@ body
     margin: 50px;
 }
 
+/* Change the way text looks when the user highlights it with his/her mouse*/
+::selection
+{
+    background-color: var(--cobalt-blue);
+    color: var(--navy-blue);
+}
+
 /* Header Styles */
 header
 {
@@ -66,7 +73,7 @@ main
 .calculator-container
 {
     align-self: center;
-    margin-left: 23%;
+    margin-left: 380px;
     width: 775px;
     height: 775px;
 }
@@ -86,25 +93,28 @@ main
     margin: auto;
     margin-top: 5px;
     border: 5px solid var(--navy-blue);
+    background-color: var(--navy-blue);
 }
 
 .calculator-screen
 {
     margin: 20px;
     height: 250px;
-    border: 5px solid var(--navy-blue);
+    border: 5px solid var(--cobalt-blue);
+    background-color: var(--cobalt-blue);
 }
 
 .operation-preview
 {
     margin: 10px;
     height: 80px;
-    border: 5px solid var(--navy-blue);
+    border: 5px solid var(--cobalt-blue);
     margin-left: 50%;
     display: flex;
     flex-flow: row nowrap;
     justify-content: flex-end;
     align-items: flex-start;
+    color: var(--turquoise-blue);
     font-family: var(--digits-font-family);
     font-size: var(--large);
 }
@@ -113,7 +123,8 @@ main
 {
     margin: 10px;
     height: 120px;
-    border: 5px solid var(--navy-blue);
+    border: 5px solid var(--cobalt-blue);
+    color: var(--turquoise-blue);
     margin-left: 15%;
     display: flex;
     flex-flow: row nowrap;
@@ -139,20 +150,38 @@ main
 
 .button
 {
-    height: 25px;
+    height: 45px;
     margin: 10px;
-    border: 3px solid var(--navy-blue);
+    border: 3px solid var(--cobalt-blue);
     display: flex;
     flex-flow: row nowrap;
     justify-content: center;
     align-items: center;
-    font-family: var(--digits-font-family);
-    font-size: var(--large);
+    background-color: var(--cobalt-blue);
+    transition: opacity 0.3s;
 }
 
 .button:hover
 {
     cursor: pointer;
+    opacity: 0.7;
+}
+
+.button:active
+{
+    opacity: 0.3;
+}
+
+.button-content
+{
+    height: 100%;
+    font-family: var(--digits-font-family);
+    font-size: var(--large);
+    color: var(--turquoise-blue);
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: center;
+    align-items: center;
 }
 
 .clear
@@ -245,6 +274,24 @@ main
 .equals
 {
     grid-area: equals;
+}
+
+#clear, #delete
+{
+    text-transform: uppercase;
+    color: var(--white);
+}
+
+#product
+{
+    position: relative;
+    top: 2px;
+}
+
+#point
+{
+    position: relative;
+    bottom: 10px;
 }
 
 /* Footer Styles */
