@@ -80,7 +80,6 @@ main
 
 .sfx-button-container
 {
-    border: 5px solid var(--navy-blue);
     width: 200px;
     height: 150px;
     margin: 15px;
@@ -294,16 +293,80 @@ main
     bottom: 10px;
 }
 
+button#sfx-button
+{
+    height: 100%;
+    border: 5px solid var(--navy-blue);
+    background-color: var(--turquoise-blue);
+    border-radius: 50%;
+    transition: opacity 0.3s;
+}
+
+button#sfx-button:hover
+{
+    cursor: pointer;
+    opacity: 0.7;
+}
+
+button#sfx-button:active
+{
+    opacity: 0.3;
+}
+
+img#sfx-icon
+{
+    width: 50%;
+    max-width: 250px;
+}
+
 /* Footer Styles */
 footer
 {
-    border: 5px solid var(--navy-blue);
-    margin-left: 560px;
+    margin-left: 630px;
     margin-right: 530px;
 }
 
 .footer-content
 {
-    width: 300px;
-    height: 100px;
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: space-evenly;
+    align-items: center;
+    margin: auto;
+    font-size: var(--medium);
 }
+
+.footer-content > h2
+{
+    border-right: 5px solid var(--navy-blue);
+    padding-right: 45px;
+}
+
+.footer-content > h2 > a
+{
+    text-decoration: none;
+    font-family: var(--letters-font-family);
+    color: var(--navy-blue);
+}
+
+.footer-content > a > img
+{
+    width: 30%;
+    max-width: 250px;
+}
+
+.footer-content > h2 > a, .footer-content > a > img
+{
+    transition: opacity 0.3s;
+}
+
+.footer-content > h2 > a:hover, .footer-content > a > img:hover
+{
+    opacity: 0.7;
+}
+
+.footer-content > h2 > a:active, .footer-content > a > img:active
+{
+    opacity: 0.3;
+}
+
