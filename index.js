@@ -1,218 +1,140 @@
-let sfxAllowed = false;
+let firstTimeUsed = true; // Boolean to check if it's the first time the calculator is used (reset to true when cleared or all digits deleted)
 
 function main()
 {
-    // Grab DOM elements that need only one reference
-
-    // DOM elements to animate
-    const h1Header = document.querySelector("header > h1");
-    const gitHubIconLink = document.querySelector(".footer-content > a");
-    const buttons = Array.from(document.querySelectorAll(".button"));
-
-    // DOM elements to play SFX with
-    const sfxButton = document.querySelector("button#sfx-button");
-    const devUsername = document.querySelector(".footer-content > h2");
-    const sfxImage = document.querySelector("img#sfx-icon");
-
     // DOM elements relevant for the calculator
     const operationPreviewDiv = document.querySelector(".operation-preview");
     const resultPreviewDiv = document.querySelector(".result-preview");
 
     // Grab Specific Buttons
-    const clearBtn = getButtonByClassName(buttons, "clear");
-    const deleteBtn = getButtonByClassName(buttons, "delete");
-
-    // Add animation to each element
-    const buttonsAnimations = buttons.map(button => {
-        return {
-            element: button,
-            className: "animate__pulse"
-        }
-    });
-
-    const animatedElementsNAnimations = [
-        {
-            element: h1Header,
-            className: "animate__pulse"
-        },
-        {
-            element: gitHubIconLink,
-            className: "animate__shakeX"
-        }
-        ,...buttonsAnimations
-    ];
-
-    // Add SFX to each required element
-    const buttonsSFXForClick = buttons.map(button => {
-
-        if (button.classList.contains("clear"))
-        {
-            return {
-                element: button,
-                sfxPath: "assets/audio/sfx/on.wav",
-                event: "click"
-            }
-        }
-
-        else if (button.classList.contains("delete"))
-        {
-            return {
-                element: button,
-                sfxPath: "assets/audio/sfx/error.wav",
-                event: "click"
-            }
-        }
-
-        else if (button.classList.contains("equals"))
-        {
-            return null;
-        }
-
-        else
-        {
-            return {
-                element: button,
-                sfxPath: "assets/audio/sfx/click.wav",
-                event: "click"
-            }
-        }
-    });
-
-    const elementsSFXForClick = [
-        {
-            element: sfxButton,
-            sfxPath: "assets/audio/sfx/on.wav",
-            event: "click"
-        },
-        {
-            element: gitHubIconLink,
-            sfxPath: "assets/audio/sfx/on.wav",
-            event: "click"
-        },
-        {
-            element: devUsername,
-            sfxPath: "assets/audio/sfx/on.wav",
-            event: "click"
-        },
-        ...buttonsSFXForClick
-    ];
-
-    const buttonsSFXForHover = buttons.map(button => {
-        return {
-            element: button,
-            sfxPath: "assets/audio/sfx/hover.wav",
-            event: "mouseover"
-        };
-    });
-
-    const elementsSFXForHover = [
-        {
-            element: h1Header,
-            sfxPath: "assets/audio/sfx/hover.wav",
-            event: "mouseover"
-        },
-        {
-            element: gitHubIconLink,
-            sfxPath: "assets/audio/sfx/hover.wav",
-            event: "mouseover"
-        },
-        {
-            element: devUsername,
-            sfxPath: "assets/audio/sfx/hover.wav",
-            event: "mouseover"
-        },
-        ...buttonsSFXForHover
-    ];
-
-    const allElementsWithEventsAndSFX = [...elementsSFXForHover, ...elementsSFXForClick];
-
-    // Add dynamic animations to animation elements
-    implementAnimations(animatedElementsNAnimations);
-
-    // Add SFX functionality
-    implementSFX(allElementsWithEventsAndSFX);
-
-    // Switch SFX on/off as required
-    sfxButton.addEventListener("click", () => toggleSFX(sfxImage));
+    const clearBtn = document.querySelector(".button.clear");
+    const deleteBtn = document.querySelector(".button.delete");
+    const pointBtn = document.querySelector(".button.point");
+    const equalsBtn = document.querySelector(".button.equals");
+    const operationBtns = Array.from(document.querySelectorAll(".button.operation"));
+    const digitsBtn = Array.from(document.querySelectorAll(".button.number"));
+    const typingBtns = [...digitsBtn, ...operationBtns, pointBtn, equalsBtn];
 
     // Clear the calculator
     clearBtn.addEventListener("click", () => clearCalculator(operationPreviewDiv, resultPreviewDiv));
 
+    // Delete from the calculator
+    deleteBtn.addEventListener("click", () => removeLastNumber(operationPreviewDiv, resultPreviewDiv));
+
+    // Handle Typing Button
+    typingBtns.forEach(typingBtn => {
+        typingBtn.addEventListener("click", (e) => typeCalculatingBtn(e, operationPreviewDiv, resultPreviewDiv));
+    });
+
 }
 
 /* Event Handlers */
-function toggleSFX(btnIcon)
-{
-    if (sfxAllowed)
-    {
-        sfxAllowed = false;
-        btnIcon.src = "assets/pics/sound-off.png";
-    }
-
-    else
-    {
-        sfxAllowed = true;
-        btnIcon.src = "assets/pics/sound-on.png";
-    }
-}
-
 function clearCalculator(operationPreview, resultPreview)
 {
     /* Clear the calculator */
     operationPreview.textContent = "";
     resultPreview.textContent = 0;
+    firstTimeUsed = true;
+}
+
+function removeLastNumber(operationPreview, resultPreview)
+{
+    /*Delete the last digit from the results preview */
+}
+
+function typeCalculatingBtn(e, operationPreview, resultPreview)
+{
+    /* Choose what to do when a calculating button is pressed */
+
+    // Grab the text content of the clicked button
+    let buttonTextContent = getArrFromStr(e.target.textContent);
+    buttonTextContent = getArrWithoutWhiteSpace(buttonTextContent);
+    buttonTextContent = getStrFromArr(buttonTextContent);
+
+    // Grab the contents of the operation preview and result preview removing all whitespace
+    const operationPreviewContentAsArr = getArrWithoutWhiteSpace(getArrFromStr(operationPreview.textContent));
+    const resultPreviewContentAsArr = getArrWithoutWhiteSpace(getArrFromStr(resultPreview.textContent));
+
+    // Grab the type of text content
+    const charType = getCharType(buttonTextContent);
+    
+    // Check if it's the first time the calculator is used
+    if (firstTimeUsed)
+    {
+        // Ignore result preview since user has not executed any operation yet
+        
+    }
+
+    else
+    {
+        // Consider result preview since user has executed one before
+    }
+
+}
+
+function chooseOperation(char)
+{
+    /* Return which arithmetic operation has to be executed */
+    let operation = "";
+
+    switch (char)
+    {
+        case "+":
+            operation = "plus";
+            break;
+        
+        case "-":
+            operation = "minus";
+            break;
+        
+        case "×":
+            operation = "product";
+            break;
+        
+        case "÷":
+            operation = "divide";
+            break;
+        
+        default:
+            operation = "unknown";
+    }
+
+    return operation;
+}
+
+function executeOperation(num1, num2, operation)
+{
+    /* Execute an operation on two numbers based on the operation type */
+    let result = 0;
+
+    switch (operation)
+    {
+        case "plus":
+            result = num1 + num2;
+            break;
+        
+        case "minus":
+            result = num1 - num2;
+            break;
+        
+        case "product":
+            result = num1 * num2;
+            break;
+        
+        case "divide":
+            result = num1 / num2;
+            break;
+        
+        default:
+            {
+                // Do nothing when the operation is unknown
+            }
+    }
+
+    return roundToTwoDigits(result);
 }
 
 /* Helpers */
-function implementAnimations(elementsNClassNames)
-{
-    /* implement animations to required elements */
-    elementsNClassNames.forEach(elementNClassName => {
-
-        // Destructure the given object of element and animation className
-        const { element, className } = elementNClassName;
-
-        // Add event listener of mouse enter to add the animation
-        element.addEventListener("mouseenter", () => {
-            addClassIfAbsent(element, className);
-        });
-
-        // Add infinite animation while mouse is over the element
-        element.addEventListener("mouseover", () => {
-            addClassIfAbsent(element, "animate__infinite");
-        });
-
-        // Remove all animations when the mouse leaves the element
-        element.addEventListener("mouseleave", () => {
-            removeClassIfPresent(element, className);
-            removeClassIfPresent(element, "animate__infinite");
-        });
-
-        // Remove all animations when the element is clicked as well
-        element.addEventListener("click", () => {
-            removeClassIfPresent(element, className);
-            removeClassIfPresent(element, "animate__infinite");
-        });
-
-    });
-
-}
-
-function implementSFX(elementsWithEventsNSFX)
-{
-    /*Associate SFX to event listeners of given elements */
-    elementsWithEventsNSFX.forEach(elementWithEventNSFX => {
-
-        if (elementWithEventNSFX !== null)
-        {
-            const { element, sfxPath, event } = elementWithEventNSFX;
-            element.addEventListener(event, () => {
-                playSFX(sfxPath);
-            });
-        }
-    });
-}
-
 function addClassIfAbsent(element, className)
 {
     /* Adds a class to a DOM's element classList if the class is not present */
@@ -231,60 +153,96 @@ function removeClassIfPresent(element, className)
     }
 }
 
-function playSFX(sfxPath)
+function isPoint(char)
 {
-    /* Play an SFX when allowed */
-    if (sfxAllowed)
-    {
-        const sfxToPlay = new Audio(sfxPath);
-        sfxToPlay.play();
-    }
+    /* Return true if the character is equal to . */
+    return char === ".";
 }
 
-function getButtonByClassName(buttonsArray, className)
+function isEquals(char)
 {
-    /* Return the button that contains the specific className */
-    for (let button of buttonsArray)
+    return char === "=";
+}
+
+function isOperationSymbol(char)
+{
+    /* Return true if the given character represents an arithmetical operation */
+    const arithOrs = ["+", "-", "×", "÷"];
+    return arithOrs.includes(char);
+}
+
+function isDigit(char)
+{
+    /* Return true if the given character represents a digit */
+    const digits = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"];
+    return digits.includes(char);
+}
+
+function getArrFromStr(str)
+{
+    /* Get an array from a string */
+    return str.split("");
+}
+
+function getCharType(char)
+{
+    /* Get the type of character according to what concerns the calculator */
+    let type = "";
+
+    if (isPoint(char))
     {
-        if (button.classList.contains(className))
+        type = "point";
+    }
+
+    else if (isEquals(char))
+    {
+        type = "equals";
+    }
+
+    else if (isOperationSymbol(char))
+    {
+        type = "operation";
+    }
+
+    else if (isDigit(char))
+    {
+        type = "number";
+    }
+
+    else
+    {
+
+    }
+
+    return type;
+}
+
+function getStrFromArr(arr)
+{
+    /*Get a string from an array */
+    return arr.join("");
+}
+
+function getArrWithoutWhiteSpace(arr)
+{
+    /* Return a new array that does not contains whitespace characters */
+    const newArr = [];
+
+    for (let char of arr)
+    {
+        if (char !== "\n" && char !== " " && char !== "\t")
         {
-            return button;
+            newArr.push(char);
         }
     }
+
+    return newArr;
 }
 
-function getButtonsByType(buttonsArray, buttonTypeChecker)
+function roundToTwoDigits(num)
 {
-    /* Return an array of buttons that belong to a specific type */
-    const buttonsOfType = [];
-
-    for (let button of buttonsArray)
-    {
-        if (buttonTypeChecker(button))
-        {
-            buttonsOfType.push(button);
-        }
-    }
-
-    return buttonsOfType;
-}
-
-function isSpecialButton(button)
-{
-    /* Return true if the given button is clear or delete */
-    return button.classList.contains("clear") || button.classList.contains("delete");
-}
-
-function isPointButton(button)
-{
-    /* Return true if the given button is the point button */
-    return button.classList.contains("point");
-}
-
-function isOperationButton(button)
-{
-    /* Return true if the given button represents an arithmetical operation */
-    return button.classList.contains("plus") || button.classList.contains("minus") || button.classList.contains("product") || button.classList.contains("multiply");
+    /*Round this number to two decimal places */
+    return Math.round(num * 100) / 100;
 }
 
 document.addEventListener("DOMContentLoaded", main);
