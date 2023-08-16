@@ -1,4 +1,6 @@
 let firstTimeUsed = true; // Boolean to check if it's the first time the calculator is used (reset to true when cleared or all digits deleted)
+let currentResult = null;
+let previousResult = null;
 
 function main()
 {
@@ -35,11 +37,40 @@ function clearCalculator(operationPreview, resultPreview)
     operationPreview.textContent = "";
     resultPreview.textContent = 0;
     firstTimeUsed = true;
+    currentResult = null;
+    previousResult = null;
 }
 
 function removeLastNumber(operationPreview, resultPreview)
 {
     /*Delete the last digit from the results preview */
+    const pureOperationPreviewTextContent = getStrFromArr(getArrWithoutWhiteSpace(getArrFromStr(operationPreview.textContent)));
+    const pureResultPreviewTextContent = getStrFromArr(getArrWithoutWhiteSpace(getArrFromStr(resultPreview.textContent)));
+
+
+    if (pureOperationPreviewTextContent === pureResultPreviewTextContent)
+    {
+        operationPreview.textContent = "";
+        resultPreview.textContent = "0";
+        firstTimeUsed = false;
+        currentResult = null;
+        previousResult = null;
+    }
+
+    else
+    {
+        if (operationPreview.textContent.length > 0)
+        {
+            operationPreview.textContent = operationPreview.textContent.slice(0, -1);
+        }
+
+        else
+        {
+            firstTimeUsed = false;
+            currentResult = null;
+            previousResult = null;
+        }
+    }
 }
 
 function typeCalculatingBtn(e, operationPreview, resultPreview)
@@ -52,8 +83,7 @@ function typeCalculatingBtn(e, operationPreview, resultPreview)
     buttonTextContent = getStrFromArr(buttonTextContent);
 
     // Grab the contents of the operation preview and result preview removing all whitespace
-    const operationPreviewContentAsArr = getArrWithoutWhiteSpace(getArrFromStr(operationPreview.textContent));
-    const resultPreviewContentAsArr = getArrWithoutWhiteSpace(getArrFromStr(resultPreview.textContent));
+    let operationPreviewContentAsArr = getArrWithoutWhiteSpace(getArrFromStr(operationPreview.textContent));
 
     // Grab the type of text content
     const charType = getCharType(buttonTextContent);
@@ -62,76 +92,74 @@ function typeCalculatingBtn(e, operationPreview, resultPreview)
     if (firstTimeUsed)
     {
         // Ignore result preview since user has not executed any operation yet
-        
+        if (charType !== "equals")
+        {
+             // If the type of the button isn't equals then write it in the operation preview
+            operationPreview.textContent = buttonTextContent;
+
+            // Set the first time used boolean variable to false
+            firstTimeUsed = false;
+        }
     }
 
     else
     {
         // Consider result preview since user has executed one before
+        if (previousResult === null)
+        {
+            if (charType !== "equals")
+            {
+                // Append the digit without spaces to the content of the operation preview
+                operationPreviewContentAsArr.push(buttonTextContent);
+                operationPreview.textContent = getStrFromArr(operationPreviewContentAsArr);
+            }
+    
+            else
+            {
+                // Execute the operation
+                currentResult = executeOperation(operationPreview.textContent);
+                previousResult = currentResult;
+                resultPreview.textContent = currentResult;
+                operationPreview.textContent = currentResult;
+    
+            }
+        }
+
+        else
+        {
+            if (charType !== "equals")
+            {
+                operationPreviewContentAsArr.push(buttonTextContent);
+                operationPreview.textContent = getStrFromArr(operationPreviewContentAsArr);
+            }
+
+            else
+            {
+                currentResult = executeOperation(operationPreview.textContent);
+                previousResult = currentResult;
+                resultPreview.textContent = currentResult;
+                operationPreview.textContent = currentResult;
+            }
+
+        }
     }
 
 }
 
-function chooseOperation(char)
-{
-    /* Return which arithmetic operation has to be executed */
-    let operation = "";
-
-    switch (char)
-    {
-        case "+":
-            operation = "plus";
-            break;
-        
-        case "-":
-            operation = "minus";
-            break;
-        
-        case "×":
-            operation = "product";
-            break;
-        
-        case "÷":
-            operation = "divide";
-            break;
-        
-        default:
-            operation = "unknown";
-    }
-
-    return operation;
-}
-
-function executeOperation(num1, num2, operation)
+function executeOperation(operationStr)
 {
     /* Execute an operation on two numbers based on the operation type */
-    let result = 0;
 
-    switch (operation)
+    try
     {
-        case "plus":
-            result = num1 + num2;
-            break;
-        
-        case "minus":
-            result = num1 - num2;
-            break;
-        
-        case "product":
-            result = num1 * num2;
-            break;
-        
-        case "divide":
-            result = num1 / num2;
-            break;
-        
-        default:
-            {
-                // Do nothing when the operation is unknown
-            }
+        let result = eval(getReadyStrForExecution(operationStr));
+        return roundToTwoDigits(result);
     }
 
-    return roundToTwoDigits(result);
+    catch (e)
+    {
+        return "Error";
+    }
 }
 
 /* Helpers */
@@ -243,6 +271,31 @@ function roundToTwoDigits(num)
 {
     /*Round this number to two decimal places */
     return Math.round(num * 100) / 100;
+}
+
+function getReadyStrForExecution(operationStr)
+{
+    let finalStr = "";
+
+    for (let char of operationStr)
+    {
+        if (char === "×")
+        {
+            finalStr += "*";
+        }
+
+        else if (char === "÷")
+        {
+            finalStr += "/";
+        }
+
+        else
+        {
+            finalStr += char;
+        }
+    }
+
+    return finalStr;
 }
 
 document.addEventListener("DOMContentLoaded", main);

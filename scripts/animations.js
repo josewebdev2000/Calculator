@@ -4,7 +4,6 @@ function mainForAnimations()
 {
     // DOM elements to animate
     const h1Header = document.querySelector("header > h1");
-    const gitHubIconLink = document.querySelector(".footer-content > a");
     const buttons = Array.from(document.querySelectorAll(".button"));
 
     // Add animation to each element
@@ -20,10 +19,6 @@ function mainForAnimations()
             element: h1Header,
             className: "animate__pulse"
         },
-        {
-            element: gitHubIconLink,
-            className: "animate__shakeX"
-        }
         ,...buttonsAnimations
     ];
 
